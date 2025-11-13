@@ -16,7 +16,6 @@ server.registerTool(
   {
     title: "Get all guitars",
     description: "Get all guitar products from the database",
-    inputSchema: {},
   },
   async () => {
     return {
