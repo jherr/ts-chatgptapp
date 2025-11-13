@@ -11,6 +11,39 @@ const server = new McpServer({
   version: "1.0.0",
 });
 
+const resourceOrigin = (() => {
+  try {
+    return new URL(config.baseURL).origin;
+  } catch {
+    return "http://localhost:3000";
+  }
+})();
+
+server.registerResource(
+  "show-guitar-html",
+  "ui://widget/show-guitar.html",
+  {},
+  async () => ({
+    contents: [
+      {
+        uri: "ui://widget/show-guitar.html",
+        mimeType: "text/html+skybridge",
+        text: `
+<div style="color: red; background-color: black;">Hello From Guitar App</div>
+        `.trim(),
+        _meta: {
+          "openai/widgetDomain": "https://chatgpt.com",
+          "openai/widgetDescription": "Displays a guitar product with styling",
+          "openai/widgetCSP": {
+            connect_domains: [resourceOrigin],
+            resource_domains: [resourceOrigin],
+          },
+        },
+      },
+    ],
+  })
+);
+
 server.registerTool(
   "getGuitars",
   {
@@ -20,6 +53,39 @@ server.registerTool(
   async () => {
     return {
       content: [{ type: "text", text: JSON.stringify(guitars) }],
+    };
+  }
+);
+
+server.registerTool(
+  "showGuitar",
+  {
+    title: "Show a guitar",
+    description: "Show a guitar product from the database",
+    inputSchema: {
+      id: z.number().describe("The id of the guitar to show"),
+    },
+    _meta: {
+      "openai/outputTemplate": "ui://widget/show-guitar.html",
+      "openai/toolInvocation/invoking": "Showing a guitar...",
+      "openai/toolInvocation/invoked": "Showed a guitar!",
+    },
+  },
+  async ({ id }) => {
+    const guitar = guitars.find((guitar) => guitar.id === +id);
+    if (!guitar) {
+      return {
+        content: [{ type: "text", text: "Guitar not found" }],
+      };
+    }
+    return {
+      content: [
+        {
+          type: "text",
+          text: JSON.stringify(guitars.find((guitar) => guitar.id === +id)),
+        },
+      ],
+      structuredContent: guitar,
     };
   }
 );
