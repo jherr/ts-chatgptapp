@@ -45,15 +45,10 @@ function PlaceGuitarRecommendation() {
   );
 }
 
-const config = {
-  baseURL: getBaseURL(),
-  debug: true,
-};
-
 function render() {
   ensureRoot().render(
     <React.StrictMode>
-      <ChatGPTIntegration config={config}>
+      <ChatGPTIntegration>
         <PlaceGuitarRecommendation />
       </ChatGPTIntegration>
     </React.StrictMode>

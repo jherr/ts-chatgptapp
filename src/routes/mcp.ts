@@ -29,7 +29,9 @@ server.registerResource(
         uri: "ui://widget/show-guitar.html",
         mimeType: "text/html+skybridge",
         text: `
-<div style="color: red; background-color: black;">Hello From Guitar App</div>
+<link rel="stylesheet" href="${config.baseURL}chatgpt-widget.css">
+<div id="tanstack-app-root"></div>
+<script src="${config.baseURL}chatgpt-widget.js"></script>
         `.trim(),
         _meta: {
           "openai/widgetDomain": "https://chatgpt.com",
