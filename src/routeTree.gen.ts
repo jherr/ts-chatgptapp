@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ExampleGuitarsIndexRouteImport } from './routes/example.guitars/index'
 import { Route as ExampleGuitarsGuitarIdRouteImport } from './routes/example.guitars/$guitarId'
 
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,36 +37,52 @@ const ExampleGuitarsGuitarIdRoute = ExampleGuitarsGuitarIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/mcp': typeof McpRoute
   '/example/guitars/$guitarId': typeof ExampleGuitarsGuitarIdRoute
   '/example/guitars': typeof ExampleGuitarsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/mcp': typeof McpRoute
   '/example/guitars/$guitarId': typeof ExampleGuitarsGuitarIdRoute
   '/example/guitars': typeof ExampleGuitarsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/mcp': typeof McpRoute
   '/example/guitars/$guitarId': typeof ExampleGuitarsGuitarIdRoute
   '/example/guitars/': typeof ExampleGuitarsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/example/guitars/$guitarId' | '/example/guitars'
+  fullPaths: '/' | '/mcp' | '/example/guitars/$guitarId' | '/example/guitars'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/example/guitars/$guitarId' | '/example/guitars'
-  id: '__root__' | '/' | '/example/guitars/$guitarId' | '/example/guitars/'
+  to: '/' | '/mcp' | '/example/guitars/$guitarId' | '/example/guitars'
+  id:
+    | '__root__'
+    | '/'
+    | '/mcp'
+    | '/example/guitars/$guitarId'
+    | '/example/guitars/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  McpRoute: typeof McpRoute
   ExampleGuitarsGuitarIdRoute: typeof ExampleGuitarsGuitarIdRoute
   ExampleGuitarsIndexRoute: typeof ExampleGuitarsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -87,6 +109,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  McpRoute: McpRoute,
   ExampleGuitarsGuitarIdRoute: ExampleGuitarsGuitarIdRoute,
   ExampleGuitarsIndexRoute: ExampleGuitarsIndexRoute,
 }
