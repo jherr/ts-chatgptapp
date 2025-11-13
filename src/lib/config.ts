@@ -4,7 +4,7 @@ export const getBaseURL = () => {
   }
   return (
     import.meta.env.VITE_APP_URL ||
-    "https://rw-ts-test-app-production.up.railway.app/"
+    "https://ts-chatgptapp-production.up.railway.app/"
   );
 };
 
