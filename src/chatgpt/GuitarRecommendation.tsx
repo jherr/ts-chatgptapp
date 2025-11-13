@@ -1,0 +1,38 @@
+import { getBaseURL } from "../lib/config";
+import guitars from "../data/example-guitars";
+
+export default function GuitarRecommendation({
+  id,
+  children,
+}: {
+  id: string;
+  children: React.ReactNode;
+}) {
+  const guitar = guitars.find((guitar) => guitar.id === +id);
+  if (!guitar) {
+    return null;
+  }
+  return (
+    <div className="my-4 rounded-lg overflow-hidden border border-orange-500/20 bg-gray-800/50">
+      <div className="aspect-4/3 relative overflow-hidden">
+        <img
+          src={`${getBaseURL()}${guitar.image}`}
+          alt={guitar.name}
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <div className="p-4">
+        <h3 className="text-lg font-semibold text-white mb-2">{guitar.name}</h3>
+        <p className="text-sm text-gray-300 mb-3 line-clamp-2">
+          {guitar.shortDescription}
+        </p>
+        <div className="flex items-center justify-between">
+          <div className="text-lg font-bold text-emerald-400">
+            ${guitar.price}
+          </div>
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
