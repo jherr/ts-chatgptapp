@@ -3,9 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build:widget": "vite build --config vite.config.widget.ts && mv widget-dist/* public && rm -rf widget-dist",
     "dev": "vite dev --port 3000",
-    "build": "npm run build:widget && vite build",
+    "build": "vite build",
     "serve": "vite preview",
     "start": "node .output/server/index.mjs",
     "test": "vitest run"
